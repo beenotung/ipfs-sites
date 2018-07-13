@@ -1,0 +1,161 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title> IPFS Sites </title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="msapplication-tap-highlight" content="no">
+</head>
+<body>
+<a id="fork" href="https://github.com/beenotung/ipfs-sites">
+  <style>
+    #fork:after {
+      position: absolute;
+      top: 3rem;
+      right: -3rem;
+      font-family: sans-serif;
+      font-size: 1rem;
+      font-weight: initial;
+      box-shadow: 0 0 0.25rem 0.25rem black;
+      border: 1px dashed lightskyblue;
+      outline: none;
+      color: white;
+      background: black;
+      text-decoration: none;
+      padding: 0.5rem;
+      transform: rotate(45deg);
+      width: 13rem;
+      text-align: center;
+      content: "Fork me on Github";
+      display: block;
+    }
+
+    @media only screen and (orientation: portrait) {
+      #fork:before {
+        content: " ";
+        line-height: 3rem;
+        white-space: pre;
+        opacity: 0;
+      }
+
+      #fork:after {
+        /*position: initial;*/
+        transform: none;
+        /*margin: 0.5rem;*/
+        top: 0.5rem;
+        right: 0.5rem;
+        width: initial;
+      }
+    }
+  </style>
+</a>
+<style>
+  body {
+    margin: 0.5rem;
+  }
+
+  form {
+    margin-bottom: 1rem;
+  }
+
+  td, th {
+    border: 1px solid black;
+    /*border-top: 0;*/
+    /*border-bottom: 0;*/
+    border-radius: 0.5rem;
+    padding: 0.25rem;
+  }
+
+  table {
+    border-collapse: collapse;
+    pointer-events: painted;
+  }
+
+  td:first-child {
+    text-align: center;
+  }
+
+  td:nth-child(2) {
+    word-break: break-all;
+  }
+</style>
+<form action="#" style="display: none">
+  <label for="base">IPFS Base</label>
+  <input id="base">
+  <button onclick="setOrigin()" type="submit">set</button>
+</form>
+<noscript>You can enable Javascript for hyperlinks</noscript>
+<script>document.getElementsByTagName('form')[0].style.display = ''</script>
+<table style="z-index: 2" onclick="noop(event)">
+  <thead>
+  <tr>
+    <th>Service Name</th>
+    <th>Path</th>
+    <th>Desc</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>qr code render</td>
+    <td>/ipfs/QmccqhJg5wm5kNjAP4k4HrYxoqaXUGNuotDUqfvYBx8jrR/qr</td>
+    <td>Generate QR Code from text</td>
+  </tr>
+  <tr>
+    <td>gpw</td>
+    <td>/ipfs/QmbcXCEfKicd7AVp3q17mHEhRciXnjrkGd2g58wL2mK8Pu/gpw</td>
+    <td>Password Generator</td>
+  </tr>
+  <tr>
+    <td>Hardbin</td>
+    <td>/ipfs/QmPYyzGthFNvqxySz6Z9uqeWwy5mByTZqv3tPM9RcRoJHR</td>
+    <td>Pastebin</td>
+  </tr>
+  <tr>
+    <td>Online Cangjie Input Method</td>
+    <td>/ipfs/QmPRs7P5cH4bw7aqF6cGwVYEggRRUumGQ4Fd2JxjF2GbRA</td>
+    <td>Web-based Cangjie input tool for Chinese typing</td>
+  </tr>
+  </tbody>
+</table>
+<script>
+  function setOrigin(origin) {
+    var input = document.getElementById('base');
+    if (origin) {
+      input.value = origin;
+    } else {
+      origin = input.value;
+      var trimmed = origin.trim();
+      if (origin.length !== trimmed.length) {
+        input.value = trimmed;
+        origin = trimmed;
+      }
+    }
+    localStorage['origin'] = origin;
+    document.querySelectorAll('tr td:nth-child(2)').forEach(function (e) {
+      var ipfsPath = e.textContent;
+      var a = document.createElement('a');
+      a.href = origin + ipfsPath;
+      a.textContent = ipfsPath;
+      e.textContent = '';
+      e.appendChild(a);
+    })
+  }
+
+  var origin = localStorage['origin'];
+  if (origin) {
+    setOrigin(origin)
+  } else {
+    if (location.href.indexOf('/ipfs/') !== -1) {
+      setOrigin('')
+    } else {
+      setOrigin('http://127.0.0.1:8080')
+    }
+  }
+
+  function noop(event) {
+    event.stopPropagation();
+    return false;
+  }
+</script>
+</body>
+</html>
